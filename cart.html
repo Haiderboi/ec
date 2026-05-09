@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - EC Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>🛍️ EC Shop</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="fashion.html">Fashion</a></li>
+                <li><a href="electronics.html">Electronics</a></li>
+                <li><a href="cart.html" class="active cart-link">
+                    🛒 Cart <span class="cart-count">0</span>
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>🛒 Shopping Cart</h1>
+        <p>Review and manage your items</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container cart-container">
+        <!-- Cart Items Section -->
+        <main class="cart-main">
+            <div id="cart-items" class="cart-items-container">
+                <!-- Cart items loaded by JavaScript -->
+            </div>
+        </main>
+
+        <!-- Cart Summary Section -->
+        <aside class="cart-sidebar">
+            <div class="cart-summary">
+                <!-- Summary loaded by JavaScript -->
+            </div>
+
+            <div class="cart-actions">
+                <a href="fashion.html" class="btn btn-secondary">Continue Shopping</a>
+                <button class="btn btn-danger" onclick="if(confirm('Clear entire cart?')) cartManager.clearCart();">
+                    Clear Cart
+                </button>
+            </div>
+
+            <div class="cart-info">
+                <h4>📦 Shipping Info</h4>
+                <p>Free shipping on orders over $100!</p>
+                <p>Estimated delivery: 3-5 business days</p>
+            </div>
+
+            <div class="cart-info">
+                <h4>💳 Accepted Payment</h4>
+                <p>✓ WhatsApp Commerce</p>
+                <p>✓ Other payment methods (to be added)</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>EC Shop is your one-stop destination for fashion and electronics.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="fashion.html">Fashion</a></li>
+                    <li><a href="electronics.html">Electronics</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: info@ecshop.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EC Shop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/supabase.js"></script>
+    <script>
+        // Update cart display on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            cartManager.updateCartPage();
+        });
+    </script>
+</body>
+</html>
