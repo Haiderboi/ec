@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - EC Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>🛍️ EC Shop</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="fashion.html">Fashion</a></li>
+                <li><a href="electronics.html">Electronics</a></li>
+                <li><a href="cart.html" class="cart-link">
+                    🛒 Cart <span class="cart-count">0</span>
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>💳 Checkout</h1>
+        <p>Complete your order securely</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="checkout-wrapper">
+            <!-- Checkout Form -->
+            <main class="checkout-form">
+                <h2>Shipping Information</h2>
+                <form id="checkout-form" class="form">
+                    <div class="form-group">
+                        <label for="fullname">Full Name *</label>
+                        <input type="text" id="fullname" name="fullname" required placeholder="John Doe">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="+1 (555) 123-4567">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Street Address *</label>
+                        <input type="text" id="address" name="address" required placeholder="123 Main Street">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" name="city" required placeholder="New York">
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State/Province *</label>
+                            <input type="text" id="state" name="state" required placeholder="NY">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="zip">ZIP/Postal Code *</label>
+                            <input type="text" id="zip" name="zip" required placeholder="10001">
+                        </div>
+                        <div class="form-group">
+                            <label for="country">Country *</label>
+                            <input type="text" id="country" name="country" required placeholder="United States">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Special Instructions (Optional)</label>
+                        <textarea id="notes" name="notes" placeholder="Leave notes for delivery..." rows="3"></textarea>
+                    </div>
+
+                    <h2 style="margin-top: 30px;">Payment Method</h2>
+                    <p class="payment-notice">🔒 Your payment will be processed securely through WhatsApp Commerce</p>
+
+                    <div class="form-group">
+                        <label class="checkbox large">
+                            <input type="checkbox" id="terms" required>
+                            <span>I agree to the terms and conditions and privacy policy</span>
+                        </label>
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-large" onclick="submitCheckout()">
+                        💬 Complete Order via WhatsApp
+                    </button>
+
+                    <a href="cart.html" class="btn btn-secondary btn-large">
+                        ← Back to Cart
+                    </a>
+                </form>
+            </main>
+
+            <!-- Order Summary -->
+            <aside class="checkout-summary">
+                <h2>Order Summary</h2>
+                <div id="order-items" class="order-items">
+                    <!-- Items loaded by JavaScript -->
+                </div>
+                <div class="order-totals">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="summary-subtotal">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (10%):</span>
+                        <span id="summary-tax">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Shipping:</span>
+                        <span id="summary-shipping">$0.00</span>
+                    </div>
+                    <div class="total-row total">
+                        <span>Total:</span>
+                        <span id="summary-total">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="order-benefits">
+                    <h3>✨ Why Shop with Us?</h3>
+                    <ul>
+                        <li>✓ Secure WhatsApp checkout</li>
+                        <li>✓ Fast shipping</li>
+                        <li>✓ Quality products</li>
+                        <li>✓ Great customer support</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>EC Shop is your one-stop destination for fashion and electronics.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="fashion.html">Fashion</a></li>
+                    <li><a href="electronics.html">Electronics</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: info@ecshop.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EC Shop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/supabase.js"></script>
+    <script>
+        // Load order summary on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const summary = cartManager.getOrderSummary();
+            
+            // Load order items
+            const itemsContainer = document.getElementById('order-items');
+            itemsContainer.innerHTML = summary.items.map(item => `
+                <div class="order-item">
+                    <div class="item-details">
+                        <p class="item-name">${item.name}</p>
+                        <p class="item-qty">Qty: ${item.quantity}</p>
+                    </div>
+                    <p class="item-price">$${(item.price * item.quantity).toFixed(2)}</p>
+                </div>
+            `).join('');
+
+            // Update totals
+            document.getElementById('summary-subtotal').textContent = `$${summary.subtotal.toFixed(2)}`;
+            document.getElementById('summary-tax').textContent = `$${summary.tax.toFixed(2)}`;
+            document.getElementById('summary-shipping').textContent = `$${summary.shipping.toFixed(2)}`;
+            document.getElementById('summary-total').textContent = `$${summary.total.toFixed(2)}`;
+
+            // Redirect to cart if empty
+            if (summary.items.length === 0) {
+                alert('Your cart is empty. Redirecting to cart page.');
+                location.href = 'cart.html';
+            }
+        });
+
+        // Submit checkout
+        function submitCheckout() {
+            const form = document.getElementById('checkout-form');
+            
+            // Validate form
+            if (!form.checkValidity()) {
+                alert('Please fill in all required fields.');
+                form.reportValidity();
+                return;
+            }
+
+            // Get form data
+            const customerInfo = {
+                fullname: document.getElementById('fullname').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                zip: document.getElementById('zip').value,
+                country: document.getElementById('country').value,
+                notes: document.getElementById('notes').value
+            };
+
+            // Send to WhatsApp
+            cartManager.sendToWhatsApp(customerInfo);
+
+            // Show success message
+            alert('Your order has been sent to WhatsApp! 🎉\nYou will be redirected to home page.');
+            
+            // Redirect to home after a delay
+            setTimeout(() => {
+                location.href = 'index.html';
+            }, 2000);
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('checkout-form').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.target.matches('textarea')) {
+                e.preventDefault();
+                submitCheckout();
+            }
+        });
+    </script>
+</body>
+</html>
