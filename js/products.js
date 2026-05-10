@@ -244,10 +244,13 @@ function getPriceRange(type) {
 // Render product card HTML
 function renderProductCard(product) {
     const stars = '⭐'.repeat(Math.floor(product.rating));
+    const productImage = typeof resolveProductImageUrl === 'function'
+        ? resolveProductImageUrl(product.image)
+        : product.image;
     return `
         <div class="product-card">
             <div class="product-image">
-                <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/400x400?text=${encodeURIComponent(product.name)}'">
+                <img src="${productImage}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/400x400?text=${encodeURIComponent(product.name)}'">
                 <span class="product-category">${product.category}</span>
             </div>
             <div class="product-info">

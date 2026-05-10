@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion - EC Shop</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand"><h1>🛍️ EC Shop</h1></div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="fashion.html" class="active">Fashion</a></li>
+                <li><a href="electronics.html">Electronics</a></li>
+                <li><a href="cart.html" class="cart-link">🛒 Cart <span class="cart-count">0</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>👗 Fashion</h1>
+        <p>Stylish apparel and accessories.</p>
+    </div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="filter-section">
+                <h3>Search</h3>
+                <input id="search-input" class="search-box" type="search" placeholder="Search fashion...">
+            </div>
+            <div class="filter-section">
+                <h3>Categories</h3>
+                <div id="category-filters" class="filter-options"></div>
+            </div>
+            <div class="filter-section">
+                <h3>Max Price: <span id="price-value"></span></h3>
+                <div class="price-filter">
+                    <input id="price-range" class="slider" type="range">
+                </div>
+            </div>
+            <div class="filter-section">
+                <h3>Sort By</h3>
+                <select id="sort-select" class="sort-select">
+                    <option value="name">Name (A-Z)</option>
+                    <option value="price-low">Price (Low to High)</option>
+                    <option value="price-high">Price (High to Low)</option>
+                    <option value="rating">Top Rated</option>
+                    <option value="reviews">Most Reviewed</option>
+                </select>
+            </div>
+            <button id="clear-filters" class="btn btn-outline">Clear Filters</button>
+        </aside>
+
+        <main class="products-section">
+            <div class="products-header">
+                <h2>Fashion Products</h2>
+                <p id="results-count"></p>
+            </div>
+            <div id="products-grid" class="products-grid"></div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>EC Shop is your one-stop destination for fashion and electronics.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="fashion.html">Fashion</a></li>
+                    <li><a href="electronics.html">Electronics</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Email: info@ecshop.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EC Shop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/cart.js"></script>
+    <script>
+        const fashionProducts = getProductsByType('fashion');
+        const priceRange = getPriceRange('fashion');
+
+        function getActiveCategories() {
+            return Array.from(document.querySelectorAll('#category-filters input:checked')).map((el) => el.value);
+        }
+
+        function renderProducts() {
+            const query = document.getElementById('search-input').value.trim().toLowerCase();
+            const categories = getActiveCategories();
+            const maxPrice = Number(document.getElementById('price-range').value);
+            const sortBy = document.getElementById('sort-select').value;
+
+            let filtered = fashionProducts.filter((product) => {
+                const matchesSearch = !query ||
+                    product.name.toLowerCase().includes(query) ||
+                    product.description.toLowerCase().includes(query) ||
+                    product.category.toLowerCase().includes(query);
+                const matchesCategory = categories.length === 0 || categories.includes(product.category);
+                const matchesPrice = product.price <= maxPrice;
+                return matchesSearch && matchesCategory && matchesPrice;
+            });
+
+            filtered = sortProducts(filtered, sortBy);
+
+            const grid = document.getElementById('products-grid');
+            const count = document.getElementById('results-count');
+            count.textContent = `${filtered.length} product(s) found`;
+
+            grid.innerHTML = filtered.length
+                ? filtered.map(renderProductCard).join('')
+                : '<div class="no-products">No products match your filters.</div>';
+        }
+
+        function initFilters() {
+            const categoryMarkup = getCategories('fashion')
+                .map((category) => `
+                    <label class="checkbox">
+                        <input type="checkbox" value="${category}">
+                        <span>${category}</span>
+                    </label>
+                `).join('');
+            document.getElementById('category-filters').innerHTML = categoryMarkup;
+
+            const slider = document.getElementById('price-range');
+            slider.min = Math.floor(priceRange.min);
+            slider.max = Math.ceil(priceRange.max);
+            slider.value = Math.ceil(priceRange.max);
+            document.getElementById('price-value').textContent = `$${slider.value}`;
+
+            document.getElementById('search-input').addEventListener('input', renderProducts);
+            document.getElementById('sort-select').addEventListener('change', renderProducts);
+            document.getElementById('category-filters').addEventListener('change', renderProducts);
+            slider.addEventListener('input', function() {
+                document.getElementById('price-value').textContent = `$${slider.value}`;
+                renderProducts();
+            });
+            document.getElementById('clear-filters').addEventListener('click', function() {
+                document.getElementById('search-input').value = '';
+                document.querySelectorAll('#category-filters input').forEach((input) => { input.checked = false; });
+                slider.value = Math.ceil(priceRange.max);
+                document.getElementById('price-value').textContent = `$${slider.value}`;
+                document.getElementById('sort-select').value = 'name';
+                renderProducts();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initFilters();
+            renderProducts();
+            cartManager.updateCartUI();
+        });
+    </script>
+</body>
+</html>

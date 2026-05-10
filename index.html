@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC Shop - Home</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand"><h1>🛍️ EC Shop</h1></div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="fashion.html">Fashion</a></li>
+                <li><a href="electronics.html">Electronics</a></li>
+                <li><a href="cart.html" class="cart-link">🛒 Cart <span class="cart-count">0</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Shop Fashion & Electronics</h2>
+            <p>Discover top picks with easy WhatsApp checkout.</p>
+            <div class="hero-buttons">
+                <a href="fashion.html" class="btn btn-primary">Shop Fashion</a>
+                <a href="electronics.html" class="btn btn-secondary">Shop Electronics</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="categories">
+        <h2>Browse Categories</h2>
+        <div class="category-grid">
+            <a class="category-card" href="fashion.html">
+                <div class="category-icon">👗</div>
+                <h3>Fashion</h3>
+                <p>Clothing, shoes, and accessories.</p>
+                <span class="btn btn-outline">Explore</span>
+            </a>
+            <a class="category-card" href="electronics.html">
+                <div class="category-icon">💻</div>
+                <h3>Electronics</h3>
+                <p>Phones, laptops, tablets, and more.</p>
+                <span class="btn btn-outline">Explore</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="featured">
+        <h2>Featured Products</h2>
+        <div id="featured-products" class="products-grid"></div>
+    </section>
+
+    <section class="newsletter">
+        <div class="newsletter-content">
+            <h2>Get Offers</h2>
+            <p>Subscribe for updates on new arrivals and deals.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>EC Shop is your one-stop destination for fashion and electronics.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="fashion.html">Fashion</a></li>
+                    <li><a href="electronics.html">Electronics</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>Email: info@ecshop.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 EC Shop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/cart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const featured = [...getProductsByType('fashion').slice(0, 3), ...getProductsByType('electronics').slice(0, 3)];
+            document.getElementById('featured-products').innerHTML = featured.map(renderProductCard).join('');
+            cartManager.updateCartUI();
+        });
+    </script>
+</body>
+</html>
