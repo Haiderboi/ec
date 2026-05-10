@@ -1,8 +1,24 @@
 // Supabase Configuration
-// Initialize Supabase Client with your credentials
+// Runtime-friendly configuration for static hosting (with safe defaults)
 
-const SUPABASE_URL = 'https://yyvciloshdtkdtiidepn.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_xAMAJYfDOOxCalTWCjO1Pw_pC6iR-ws';
+const DEFAULT_SUPABASE_URL = 'https://yyvciloshdtkdtiidepn.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_xAMAJYfDOOxCalTWCjO1Pw_pC6iR-ws';
+
+function getRuntimeConfigValue(key, fallback) {
+    if (typeof window !== 'undefined') {
+        if (window.__EC_CONFIG__ && window.__EC_CONFIG__[key]) {
+            return window.__EC_CONFIG__[key];
+        }
+        const metaTag = document.querySelector(`meta[name="${key}"]`);
+        if (metaTag?.content) {
+            return metaTag.content;
+        }
+    }
+    return fallback;
+}
+
+const SUPABASE_URL = getRuntimeConfigValue('NEXT_PUBLIC_SUPABASE_URL', DEFAULT_SUPABASE_URL);
+const SUPABASE_ANON_KEY = getRuntimeConfigValue('NEXT_PUBLIC_SUPABASE_ANON_KEY', DEFAULT_SUPABASE_ANON_KEY);
 
 // Supabase Client Initialization
 class SupabaseClient {
@@ -55,7 +71,7 @@ class SupabaseClient {
     async uploadFile(bucket, path, file) {
         try {
             const formData = new FormData();
-            formData.append('', file);
+            formData.append('file', file);
 
             const response = await fetch(
                 `${this.url}/storage/v1/object/${bucket}/${path}`,
@@ -150,6 +166,14 @@ async function getProductsFromDatabase() {
 // Get all orders from Supabase
 async function getOrdersFromDatabase() {
     return await supabase.getTable('orders');
+}
+
+// Resolve image URL from either full URL or Supabase storage path
+function resolveProductImageUrl(imageValue, bucket = 'products') {
+    if (!imageValue) return '';
+    if (/^https?:\/\//i.test(imageValue)) return imageValue;
+    const cleanPath = imageValue.replace(/^\/+/, '');
+    return supabase.getPublicUrl(bucket, cleanPath);
 }
 
 // Log Supabase configuration (for debugging)

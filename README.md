@@ -102,17 +102,27 @@ open index.html
 ## 🔧 Configuration
 
 ### Supabase Setup (Optional)
-The app is pre-configured with Supabase credentials in `js/supabase.js`:
+The app supports static-site runtime config in `js/supabase.js`:
 
 ```javascript
-const SUPABASE_URL = 'https://yyvciloshdtkdtiidepn.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_xAMAJYfDOOxCalTWCjO1Pw_pC6iR-ws';
+window.__EC_CONFIG__ = {
+  NEXT_PUBLIC_SUPABASE_URL: 'https://yyvciloshdtkdtiidepn.supabase.co',
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: 'your_anon_key'
+};
 ```
 
 To use Supabase for storing orders and images:
 1. Create tables in Supabase (orders, products, images)
 2. Update the table names in `js/supabase.js`
 3. Configure storage buckets for images
+
+### Product Images from Supabase Storage
+- Create a public bucket named `products`.
+- Store files under paths like `products/jacket-1.jpg`.
+- In product data, set `image` to either:
+  - a full URL, or
+  - a storage path like `products/jacket-1.jpg`
+- `resolveProductImageUrl` converts storage paths into public Supabase URLs automatically.
 
 ## 📁 Project Structure
 
